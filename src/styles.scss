@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~normalize-scss';
+
+@font-face {
+  font-family: 'Anakin';
+  src:  url('./assets/fonts/opipik_anakinmono/anakinmono.ttf') format('truetype');
+}
+
+@font-face {
+  font-family:"Jedi";
+  src:url("./assets/fonts/star-jedi/Strjmono.eot?") format("eot"),
+  url("./assets/fonts/star-jedi/Strjmono.woff") format("woff"),
+  url("./assets/fonts/star-jedi/Strjmono.ttf") format("truetype"),
+  url("./assets/fonts/star-jedi/Strjmono.svg#StarJediLogoMonoLine") format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; // remove osx bounce effect when srolling ends
+}
+body { margin: 0; font-family: Anakin; }
+
+h1, h2, h3  {
+  font-family: Jedi;
+}
+
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
