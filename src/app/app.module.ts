@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {SwIconModule} from 'shared/icon';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SwIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
