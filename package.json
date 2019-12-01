@@ -24,8 +24,6 @@
     "@ngrx/effects": "^8.5.2",
     "@ngrx/entity": "^8.5.2",
     "@ngrx/store": "^8.5.2",
-    "angular2-swapi": "0.0.2",
-    "ng2-swapi": "^1.0.0-rc.11",
     "normalize-scss": "^7.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

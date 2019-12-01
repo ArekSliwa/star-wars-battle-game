@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BattleUnitSwitcherDialogComponent } from './battle-unit-switcher-dialog.component';
+import { BattleUnitSwitcherDialogContainerComponent } from './battle-unit-switcher-dialog.container';
 
-describe('BattleUnitSwitcherDialogComponent', () => {
-  let component: BattleUnitSwitcherDialogComponent;
-  let fixture: ComponentFixture<BattleUnitSwitcherDialogComponent>;
+describe('BattleUnitSwitcherDialogContainerComponent', () => {
+  let component: BattleUnitSwitcherDialogContainerComponent;
+  let fixture: ComponentFixture<BattleUnitSwitcherDialogContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BattleUnitSwitcherDialogComponent ]
+      declarations: [ BattleUnitSwitcherDialogContainerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BattleUnitSwitcherDialogComponent);
+    fixture = TestBed.createComponent(BattleUnitSwitcherDialogContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

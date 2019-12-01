@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "api/*": ["app/api/*"],
       "shared/*": ["app/shared/*"],
       "store/*": ["app/store/*"],
       "models/*": ["app/models/*"]

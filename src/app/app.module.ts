@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SwIconModule} from 'shared/icon';
@@ -15,7 +14,8 @@ import {BattleUnitSwitcherComponent} from './components';
 import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {SwDirectivesModule} from 'shared/directives/directives.module';
 import { ScoreComponent } from './components/score/score.component';
-
+import {HttpClientModule} from '@angular/common/http';
+import {GameEffects} from 'store/game.effects';
 
 export interface State {
   game: fromGame.GameState;
@@ -47,6 +47,7 @@ const swModules = [
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     ...swModules,
     ...matModules,
@@ -61,7 +62,7 @@ const swModules = [
         }
       }
     ),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([GameEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
