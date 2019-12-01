@@ -4,14 +4,16 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SwIconModule} from 'shared/icon';
-import {BattleUnitSwitcherComponent} from './components/battle-unit-switcher/battle-unit-switcher.component';
 import {ActionReducerMap, MetaReducer, StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
 import {storeFreeze} from 'ngrx-store-freeze';
+import {MatButtonModule, MatDialogModule} from '@angular/material';
 import * as fromGame from 'store/index';
-import {MatButtonModule} from '@angular/material';
+import {BattleUnitSwitcherComponent} from './components';
+import {BattleUnitSwitcherDialogContainerComponent} from './containers';
+import {SwDirectivesModule} from 'shared/directives/directives.module';
 
 
 export interface State {
@@ -25,18 +27,25 @@ export const reducers: ActionReducerMap<State> = {
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 
 const matModules = [
-  MatButtonModule
+  MatButtonModule,
+  MatDialogModule
+];
+
+const swModules = [
+  SwIconModule,
+  SwDirectivesModule
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    BattleUnitSwitcherComponent
+    BattleUnitSwitcherComponent,
+    BattleUnitSwitcherDialogContainerComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    SwIconModule,
+    ...swModules,
     ...matModules,
     StoreModule.forRoot(
       reducers,
@@ -56,7 +65,10 @@ const matModules = [
     })
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    BattleUnitSwitcherDialogContainerComponent
+  ]
 })
 export class AppModule {
 }

@@ -21,7 +21,12 @@ html, body {
   height: 100%;
   overflow: hidden; // remove osx bounce effect when srolling ends
 }
-body { margin: 0; font-family: Anakin; }
+body {
+  margin: 0;
+  font-family: Anakin;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 h1, h2, h3  {
   font-family: Jedi;

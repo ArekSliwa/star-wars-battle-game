@@ -5,7 +5,7 @@ export const sliceKey = 'game';
 
 export const selectGameSlice = createFeatureSelector<GameState>(sliceKey);
 
-export const selectBattleUnit = createSelector(
+export const selectBattleUnitName = createSelector(
   selectGameSlice,
   (state: GameState) => !!state && state.battleUnitName
 );

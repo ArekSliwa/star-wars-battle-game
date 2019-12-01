@@ -1,7 +1,6 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {BattleUnitName} from 'models/battle-unit.model';
-import {Store} from '@ngrx/store';
-import * as fromGame from 'store/index';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 
 @Component({
   selector: 'sw-root',
@@ -9,11 +8,17 @@ import * as fromGame from 'store/index';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
-  constructor(private store: Store<{}>) {
+export class AppComponent implements OnInit {
+  constructor(public dialog: MatDialog) {}
 
+  ngOnInit() {
+    this.openBattleUnitSwitcherDialog();
   }
-  onBattleUnitClick(battleUnitName: BattleUnitName) {
-    this.store.dispatch(fromGame.changeBattleUnit({ battleUnitName }));
+
+  openBattleUnitSwitcherDialog() {
+    this.dialog.open(BattleUnitSwitcherDialogContainerComponent, {
+      height: '400px',
+      width: '600px',
+    });
   }
 }
