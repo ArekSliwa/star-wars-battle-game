@@ -9,11 +9,12 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
 import {storeFreeze} from 'ngrx-store-freeze';
-import {MatButtonModule, MatDialogModule} from '@angular/material';
+import {MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
 import * as fromGame from 'store/index';
 import {BattleUnitSwitcherComponent} from './components';
 import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {SwDirectivesModule} from 'shared/directives/directives.module';
+import { ScoreComponent } from './components/score/score.component';
 
 
 export interface State {
@@ -28,7 +29,8 @@ export const metaReducers: MetaReducer<State>[] = !environment.production ? [sto
 
 const matModules = [
   MatButtonModule,
-  MatDialogModule
+  MatDialogModule,
+  MatButtonToggleModule
 ];
 
 const swModules = [
@@ -40,7 +42,8 @@ const swModules = [
   declarations: [
     AppComponent,
     BattleUnitSwitcherComponent,
-    BattleUnitSwitcherDialogContainerComponent
+    BattleUnitSwitcherDialogContainerComponent,
+    ScoreComponent
   ],
   imports: [
     BrowserModule,

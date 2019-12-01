@@ -1,5 +1,5 @@
 import {createAction, props, union} from '@ngrx/store';
-import {BattleUnitName} from '../models';
+import {BattleUnitName, Score} from '../models';
 
 const actionTypeGroupKey = 'Game';
 
@@ -8,8 +8,14 @@ export const changeBattleUnit = createAction(
   props<{battleUnitName: BattleUnitName}>()
 );
 
+export const updateScore = createAction(
+  `[${actionTypeGroupKey}] Update Score`,
+  props<{score: Score}>()
+);
+
 const all = union({
-  changeBattleUnit
+  changeBattleUnit,
+  updateScore
 });
 
 export type GameActionsUnion = typeof all;

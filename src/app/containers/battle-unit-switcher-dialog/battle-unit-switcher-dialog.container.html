@@ -1,14 +1,19 @@
 <!-- TODO: layout -->
-<ng-container *ngLet="(battleUnitName$ | async) as battleUnitName">
-<h2 align="center">choose battle unit: {{battleUnitName}}</h2>
+<h2 align="center">choose battle unit</h2>
 <mat-dialog-content align="center">
-  <sw-battle-unit-switcher (battleUnitClick)="onBattleUnitClick($event)"></sw-battle-unit-switcher>
+  <sw-battle-unit-switcher [initialValue]="(battleUnitName$ | async)"
+                           (battleUnitClick)="onBattleUnitClick($event)">
+  </sw-battle-unit-switcher>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-<button mat-button type="button" mat-dialog-close [disabled]="!battleUnitName">
+<button mat-button
+        type="button"
+        mat-dialog-close
+        [disabled]="(battleUnitChange$ | async) === false"
+        (click)="onPlayClick()">
   <span>play</span>
   <sw-svg-icon iconId="light-saber"></sw-svg-icon>
 </button>
   <!-- TODO: button - come back to play if dialog opened again and battleUnitName exist -->
 </mat-dialog-actions>
-</ng-container>
+

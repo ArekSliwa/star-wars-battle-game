@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {BattleUnitName} from 'models/index';
+import {MatButtonToggleChange} from '@angular/material';
 
 @Component({
   selector: 'sw-battle-unit-switcher',
@@ -8,6 +9,13 @@ import {BattleUnitName} from 'models/index';
 })
 export class BattleUnitSwitcherComponent {
 
+  @Input()
+  initialValue: BattleUnitName | null;
+
   @Output()
   battleUnitClick: EventEmitter<BattleUnitName> = new EventEmitter();
+
+  onButtonToggleGroupChange({value}: MatButtonToggleChange) {
+    this.battleUnitClick.emit(value);
+  }
 }

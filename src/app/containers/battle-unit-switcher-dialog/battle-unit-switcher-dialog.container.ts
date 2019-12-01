@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {BattleUnitName} from 'models/battle-unit.model';
+import {BattleUnitName, Score} from 'models/index';
 import * as fromGame from 'store/index';
 import {MatDialogRef} from '@angular/material';
-import {Subject} from 'rxjs';
-import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {filter, map, startWith, takeUntil, tap, withLatestFrom} from 'rxjs/operators';
 
 @Component({
   selector: 'sw-battle-unit-switcher-dialog-container',
@@ -16,18 +16,34 @@ export class BattleUnitSwitcherDialogContainerComponent implements OnDestroy {
 
   destroyed$: Subject<void> = new Subject<void>();
 
-  battleUnitName$ = this.store.select(fromGame.selectBattleUnitName);
+  // TODO: check why '' is needed below
+  battleUnitName$: Observable<BattleUnitName | ''> = this.store.select(fromGame.selectBattleUnitName);
+
+  score$: Observable<Score> = this.store.select(fromGame.selectScore);
 
   battleUnitClick$: Subject<BattleUnitName> = new Subject<BattleUnitName>();
 
-  changeBattleUnit$ = this.battleUnitClick$.pipe(
+  playClick$: Subject<Score> = new Subject<Score>();
+
+  battleUnitChange$: Observable<boolean> = this.battleUnitClick$.pipe(
     takeUntil(this.destroyed$),
     withLatestFrom(this.battleUnitName$),
-    filter((
-      [battleUnitName, previousBattleUnitName]: [BattleUnitName, BattleUnitName]) =>
-      battleUnitName !== previousBattleUnitName),
     map(([battleUnitName, previousBattleUnitName]: [BattleUnitName, BattleUnitName]) => {
+      return battleUnitName !== previousBattleUnitName;
+    }),
+    startWith(false)
+  );
+
+  startNewGame$ = this.playClick$.pipe(
+    takeUntil(this.destroyed$),
+    withLatestFrom(this.score$, this.battleUnitClick$),
+    tap(([resetedScore, currentScore, battleUnitName]) => {
       this.store.dispatch(fromGame.changeBattleUnit({battleUnitName}));
+    }),
+    filter(([resetedScore, currentScore]) =>
+      Object.entries(resetedScore).toString() !== Object.entries(currentScore).toString()),
+    map(([resetedScore, currentScore]) => {
+      this.store.dispatch(fromGame.updateScore({ score: resetedScore }));
     })
   ).subscribe();
 
@@ -37,6 +53,14 @@ export class BattleUnitSwitcherDialogContainerComponent implements OnDestroy {
 
   onBattleUnitClick(battleUnitName: BattleUnitName) {
     this.battleUnitClick$.next(battleUnitName);
+  }
+
+  onPlayClick() {
+    const resetedScore: Score = {
+      player1: 0,
+      player2: 0
+    };
+    this.playClick$.next(resetedScore);
   }
 
   ngOnDestroy(): void {

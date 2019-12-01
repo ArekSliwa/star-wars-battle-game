@@ -9,3 +9,8 @@ export const selectBattleUnitName = createSelector(
   selectGameSlice,
   (state: GameState) => !!state && state.battleUnitName
 );
+
+export const selectScore = createSelector(
+  selectGameSlice,
+  (state: GameState) => !!state && state.score
+);
