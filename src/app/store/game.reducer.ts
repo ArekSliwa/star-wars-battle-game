@@ -1,14 +1,32 @@
 import {BattleUnitName, Score} from '../models';
 import {createReducer, on} from '@ngrx/store';
 import * as GameActions from './game.actions';
+import {createEntityAdapter, EntityState} from '@ngrx/entity';
+import {PersonUI} from 'models/index';
+
+
+export const peopleAdapter = createEntityAdapter<PersonUI>({
+  selectId: (person) => parseInt(person.url.substring(person.url.indexOf('people') + 7), 10)
+});
+
+export interface PeopleState extends EntityState<PersonUI> {
+  loading: boolean;
+  loaded: boolean;
+  error: any | null;
+}
+
+const peopleInitialState = peopleAdapter.getInitialState({
+  loading: false,
+  loaded: false,
+  error: null
+});
 
 export interface GameState {
   battleUnitName: BattleUnitName;
   score: Score;
-  peopleTotal: number;
   starshipsTotal: number;
-  peopleLoading: boolean;
   starshipsLoading: boolean;
+  people: PeopleState;
   error: string;
 }
 
@@ -18,10 +36,9 @@ const initialState: GameState = {
     player1: 0,
     player2: 0
   },
-  peopleTotal: null,
   starshipsTotal: null,
-  peopleLoading: false,
   starshipsLoading: false,
+  people: peopleInitialState,
   error: null
 };
 
@@ -35,21 +52,30 @@ const reducer = createReducer(
     ...state,
     score
   })),
-  on(GameActions.getPeopleTotal, (state) => ({
+  on(GameActions.getPeople, (state) => ({
     ...state,
-    peopleLoading: true,
-    error: null
+    people: {
+      ...state.people,
+      loading: true,
+      error: null
+    }
   })),
-  on(GameActions.getPeopleTotalFailure, (state, {error}) => ({
+  on(GameActions.getPeopleFailure, (state, {error}) => ({
     ...state,
-    peopleLoading: false,
-    error
+    people: {
+      ...state.people,
+      loading: false,
+      error
+    }
   })),
-  on(GameActions.getPeopleTotalSuccess, (state, {peopleTotal}) => ({
+  on(GameActions.getPeopleSuccess, (state, {people}) => ({
     ...state,
-    peopleTotal,
-    peopleLoading: false,
-    error: null
+    people: peopleAdapter.upsertMany(people || [], {
+      ...state.people,
+      loading: false,
+      loaded: true,
+      error: null
+    })
   })),
   on(GameActions.getStarshipsTotal, (state) => ({
     ...state,

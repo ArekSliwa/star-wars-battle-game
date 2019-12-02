@@ -27,8 +27,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.openBattleUnitSwitcherDialog();
 
-    // TODO load only required resources total
-    this.store.dispatch(fromGame.getPeopleTotal());
+    // TODO load only one required resource?
+    // TODO not total but unit.url: last part of url
+    this.store.dispatch(fromGame.getPeople({nextPageUrl: ''}));
     this.store.dispatch(fromGame.getStarshipsTotal());
   }
 

@@ -1,5 +1,5 @@
 import {createAction, props, union} from '@ngrx/store';
-import {BattleUnitName, Score} from '../models';
+import {BattleUnitName, PersonUI, Score} from 'models/index';
 
 const actionTypeGroupKey = 'Game';
 
@@ -13,18 +13,23 @@ export const updateScore = createAction(
   props<{score: Score}>()
 );
 
-export const getPeopleTotal = createAction(
-  `[${actionTypeGroupKey}] API - Get People Total`
+export const getPeople = createAction(
+  `[${actionTypeGroupKey}] API - Get People`,
+  props<{nextPageUrl?: string}>()
 );
 
-export const getPeopleTotalFailure = createAction(
-  `[${actionTypeGroupKey}] API - Get People Total Failure`,
+export const getPeopleFailure = createAction(
+  `[${actionTypeGroupKey}] API - Get People Failure`,
   props<{ error: string }>()
 );
 
-export const getPeopleTotalSuccess = createAction(
-  `[${actionTypeGroupKey}] API - Get People Total Success`,
-  props<{ peopleTotal: number }>()
+export const getPeopleSuccess = createAction(
+  `[${actionTypeGroupKey}] API - Get People Success`,
+  props<{ people: PersonUI[] }>()
+);
+
+export const getAllPeopleFinish = createAction(
+  `[${actionTypeGroupKey}] API - Get All People Finish`
 );
 
 export const getStarshipsTotal = createAction(
@@ -44,9 +49,10 @@ export const getStarshipsTotalSuccess = createAction(
 const all = union({
   changeBattleUnit,
   updateScore,
-  getPeopleTotal,
-  getPeopleTotalFailure,
-  getPeopleTotalSuccess,
+  getPeople,
+  getPeopleFailure,
+  getPeopleSuccess,
+  getAllPeopleFinish,
   getStarshipsTotal,
   getStarshipsTotalFailure,
   getStarshipsTotalSuccess
