@@ -13,9 +13,9 @@ export class StarshipsApiService extends BaseApiService {
     super();
   }
 
-  getStarships(): Observable<HttpResponse<GetStarshipsResponse>> {
+  getStarships(nextPageUrl = ''): Observable<HttpResponse<GetStarshipsResponse>> {
     const starshipsUrl = 'starships';
-    return this.http.get<GetStarshipsResponse>(this.rootUrl + starshipsUrl, { observe: 'response' });
+    return this.http.get<GetStarshipsResponse>(this.rootUrl + starshipsUrl + nextPageUrl, { observe: 'response' });
   }
 
   getStarship(id: number): Observable<HttpResponse<Starship>> {

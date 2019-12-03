@@ -3,9 +3,10 @@ import {MatDialog} from '@angular/material';
 import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {Store} from '@ngrx/store';
 import * as fromGame from 'store/index';
-import {Observable} from 'rxjs';
+import {Observable, zip} from 'rxjs';
 import {Score} from 'models/score.model';
 import {PeopleApiService, StarshipsApiService} from 'api/index';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'sw-root',
@@ -17,6 +18,14 @@ export class AppComponent implements OnInit {
 
   score$: Observable<Score> = this.store.select(fromGame.selectScore);
 
+  unitsloaded$: Observable<boolean> = zip(
+    this.store.select(fromGame.selectAllPeopleLoaded),
+    this.store.select(fromGame.selectAllStarshipsLoaded),
+  ).pipe(
+    map(([peopleLoaded, starshipsLoaded]: [boolean, boolean]) => peopleLoaded && starshipsLoaded),
+    tap((isLoaded) => !isLoaded || this.openBattleUnitSwitcherDialog())
+  );
+
   constructor(
     public dialog: MatDialog,
     private store: Store<{}>,
@@ -25,12 +34,8 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.openBattleUnitSwitcherDialog();
-
-    // TODO load only one required resource?
-    // TODO not total but unit.url: last part of url
     this.store.dispatch(fromGame.getPeople({nextPageUrl: ''}));
-    this.store.dispatch(fromGame.getStarshipsTotal());
+    this.store.dispatch(fromGame.getStarships({nextPageUrl: ''}));
   }
 
   openBattleUnitSwitcherDialog() {

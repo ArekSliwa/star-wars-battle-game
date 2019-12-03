@@ -3,6 +3,7 @@ import {createReducer, on} from '@ngrx/store';
 import * as GameActions from './game.actions';
 import {createEntityAdapter, EntityState} from '@ngrx/entity';
 import {PersonUI} from 'models/index';
+import {StarshipUI} from 'models/starship-ui.model';
 
 
 export const peopleAdapter = createEntityAdapter<PersonUI>({
@@ -12,22 +13,41 @@ export const peopleAdapter = createEntityAdapter<PersonUI>({
 export interface PeopleState extends EntityState<PersonUI> {
   loading: boolean;
   loaded: boolean;
+  loadedAll: boolean;
   error: any | null;
 }
 
 const peopleInitialState = peopleAdapter.getInitialState({
   loading: false,
   loaded: false,
+  loadedAll: false,
   error: null
 });
+
+export const starshipsAdapter = createEntityAdapter<StarshipUI>({
+  selectId: (starship) => parseInt(starship.url.substring(starship.url.indexOf('starships') + 10), 10)
+});
+
+export interface StarshipsState extends EntityState<StarshipUI> {
+  loading: boolean;
+  loaded: boolean;
+  loadedAll: boolean;
+  error: any | null;
+}
+
+const starshipsInitialState = starshipsAdapter.getInitialState({
+  loading: false,
+  loaded: false,
+  loadedAll: false,
+  error: null
+});
+
 
 export interface GameState {
   battleUnitName: BattleUnitName;
   score: Score;
-  starshipsTotal: number;
-  starshipsLoading: boolean;
   people: PeopleState;
-  error: string;
+  starships: StarshipsState;
 }
 
 const initialState: GameState = {
@@ -36,10 +56,8 @@ const initialState: GameState = {
     player1: 0,
     player2: 0
   },
-  starshipsTotal: null,
-  starshipsLoading: false,
   people: peopleInitialState,
-  error: null
+  starships: starshipsInitialState
 };
 
 const reducer = createReducer(
@@ -77,21 +95,44 @@ const reducer = createReducer(
       error: null
     })
   })),
-  on(GameActions.getStarshipsTotal, (state) => ({
+  on(GameActions.getAllPeopleFinish, (state) => ({
     ...state,
-    starshipsLoading: true,
-    error: null
+    people: {
+      ...state.people,
+      loadedAll: true
+    }
   })),
-  on(GameActions.getStarshipsTotalFailure, (state, {error}) => ({
+  on(GameActions.getStarships, (state) => ({
     ...state,
-    starshipsLoading: false,
-    error
+    starships: {
+      ...state.starships,
+      loading: true,
+      error: null
+    }
   })),
-  on(GameActions.getStarshipsTotalSuccess, (state, {starshipsTotal}) => ({
+  on(GameActions.getStarshipsFailure, (state, {error}) => ({
     ...state,
-    starshipsTotal,
-    starshipsLoading: false,
-    error: null
+    starships: {
+      ...state.starships,
+      loading: false,
+      error
+    }
+  })),
+  on(GameActions.getStarshipsSuccess, (state, {starships}) => ({
+    ...state,
+    starships: starshipsAdapter.upsertMany(starships || [], {
+      ...state.starships,
+      loading: false,
+      loaded: true,
+      error: null
+    })
+  })),
+  on(GameActions.getAllStarshipsFinish, (state) => ({
+    ...state,
+    starships: {
+      ...state.starships,
+      loadedAll: true
+    }
   }))
 );
 

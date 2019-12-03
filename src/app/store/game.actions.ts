@@ -1,5 +1,6 @@
 import {createAction, props, union} from '@ngrx/store';
 import {BattleUnitName, PersonUI, Score} from 'models/index';
+import {StarshipUI} from 'models/starship-ui.model';
 
 const actionTypeGroupKey = 'Game';
 
@@ -32,18 +33,23 @@ export const getAllPeopleFinish = createAction(
   `[${actionTypeGroupKey}] API - Get All People Finish`
 );
 
-export const getStarshipsTotal = createAction(
-  `[${actionTypeGroupKey}] API - Get Starships Total`
+export const getStarships = createAction(
+  `[${actionTypeGroupKey}] API - Get Starships Total`,
+  props<{nextPageUrl?: string}>()
 );
 
-export const getStarshipsTotalFailure = createAction(
+export const getStarshipsFailure = createAction(
   `[${actionTypeGroupKey}] API - Get Starships Total Failure`,
   props<{ error: string }>()
 );
 
-export const getStarshipsTotalSuccess = createAction(
+export const getStarshipsSuccess = createAction(
   `[${actionTypeGroupKey}] API - Get Starships Total Success`,
-  props<{ starshipsTotal: number }>()
+  props<{ starships: StarshipUI[] }>()
+);
+
+export const getAllStarshipsFinish = createAction(
+  `[${actionTypeGroupKey}] API - Get All Starships Finish`
 );
 
 const all = union({
@@ -53,9 +59,10 @@ const all = union({
   getPeopleFailure,
   getPeopleSuccess,
   getAllPeopleFinish,
-  getStarshipsTotal,
-  getStarshipsTotalFailure,
-  getStarshipsTotalSuccess
+  getStarships,
+  getStarshipsFailure,
+  getStarshipsSuccess,
+  getAllStarshipsFinish
 });
 
 export type GameActionsUnion = typeof all;

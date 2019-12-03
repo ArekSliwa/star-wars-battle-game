@@ -1,3 +1,4 @@
 <button mat-stroked-button type="button" (click)="openBattleUnitSwitcherDialog()">change battle unit</button>
 <sw-score [score]="score$ | async"></sw-score>
 
+<h3 *ngIf="(unitsloaded$ | async) === false">mobilizing army...</h3>

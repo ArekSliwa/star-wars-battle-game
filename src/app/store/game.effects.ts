@@ -3,11 +3,12 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {PeopleApiService, StarshipsApiService} from 'api/index';
 
 import * as GameActions from './game.actions';
-import {catchError, concatMap, map, mergeMap, pluck, switchMap} from 'rxjs/operators';
+import {catchError, concatMap, pluck, switchMap} from 'rxjs/operators';
 import {GetPeopleResponse, GetStarshipsResponse} from 'api/models/index';
-import {empty, Observable, of} from 'rxjs';
+import {of} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PersonAdapter} from 'models/person-ui.model';
+import {StarshipAdapter} from 'models/starship-ui.model';
 
 @Injectable()
 export class GameEffects {
@@ -22,7 +23,9 @@ export class GameEffects {
             GameActions.getPeopleSuccess({
               people: response.results.map((person) => PersonAdapter.adapt(person))
             }),
-            response.next ? GameActions.getPeople({nextPageUrl: response.next.substring(response.next.lastIndexOf('/'))}) : GameActions.getAllPeopleFinish()
+            response.next ?
+              GameActions.getPeople({nextPageUrl: getLastSegment(response.next)})
+              : GameActions.getAllPeopleFinish()
           ]),
           catchError(({message}: HttpErrorResponse) =>
             of(GameActions.getPeopleFailure({error: message})))
@@ -30,16 +33,20 @@ export class GameEffects {
       )
     ));
 
-  getStarshipsTotal$ = createEffect(() =>
+  getStarships$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(GameActions.getStarshipsTotal),
-      switchMap(() =>
-        this.starshipsApiService.getStarships().pipe(
+      ofType(GameActions.getStarships),
+      switchMap(({nextPageUrl}) =>
+        this.starshipsApiService.getStarships(nextPageUrl).pipe(
           pluck('body'),
-          map((response: GetStarshipsResponse) =>
-            GameActions.getStarshipsTotalSuccess({starshipsTotal: response.count})),
+          switchMap((response: GetStarshipsResponse) => [
+            GameActions.getStarshipsSuccess({starships: response.results.map((starship) => StarshipAdapter.adapt(starship))}),
+            response.next ?
+              GameActions.getStarships({nextPageUrl: getLastSegment(response.next)})
+              : GameActions.getAllStarshipsFinish()
+          ]),
           catchError(({message}: HttpErrorResponse) =>
-            of(GameActions.getStarshipsTotalFailure({error: message})))
+            of(GameActions.getStarshipsFailure({error: message})))
         )
       )
     ));
@@ -50,4 +57,8 @@ export class GameEffects {
     private starshipsApiService: StarshipsApiService
   ) {
   }
+}
+
+export function getLastSegment(url) {
+  return url.substring(url.lastIndexOf('/'));
 }
