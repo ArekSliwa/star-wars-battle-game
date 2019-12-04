@@ -97,10 +97,13 @@ const reducer = createReducer(
   })),
   on(GameActions.getAllPeopleFinish, (state) => ({
     ...state,
-    people: {
-      ...state.people,
-      loadedAll: true
-    }
+    people: peopleAdapter.removeMany(
+      ({mass}) => mass === 'unknown',
+      {
+        ...state.people,
+        loadedAll: true
+      }
+    )
   })),
   on(GameActions.getStarships, (state) => ({
     ...state,

@@ -38,10 +38,12 @@ export class BattleUnitSwitcherDialogContainerComponent implements OnDestroy {
     takeUntil(this.destroyed$),
     withLatestFrom(this.score$, this.battleUnitClick$),
     tap(([resetedScore, currentScore, battleUnitName]) => {
+      // set name of battle unit before new game:
       this.store.dispatch(fromGame.changeBattleUnit({battleUnitName}));
     }),
     filter(([resetedScore, currentScore]) =>
       Object.entries(resetedScore).toString() !== Object.entries(currentScore).toString()),
+    // and if current score not 0 : 0 then reset score before new game:
     map(([resetedScore, currentScore]) => {
       this.store.dispatch(fromGame.updateScore({ score: resetedScore }));
     })

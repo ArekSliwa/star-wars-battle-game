@@ -8,7 +8,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
 import {storeFreeze} from 'ngrx-store-freeze';
-import {MatButtonModule, MatButtonToggleModule, MatDialogModule} from '@angular/material';
+import {MatButtonModule, MatButtonToggleModule, MatCardModule, MatDialogModule} from '@angular/material';
 import * as fromGame from 'store/index';
 import {BattleUnitSwitcherComponent} from './components';
 import {BattleUnitSwitcherDialogContainerComponent} from './containers';
@@ -30,7 +30,8 @@ export const metaReducers: MetaReducer<State>[] = !environment.production ? [sto
 const matModules = [
   MatButtonModule,
   MatDialogModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatCardModule
 ];
 
 const swModules = [

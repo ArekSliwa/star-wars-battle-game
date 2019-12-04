@@ -1,1 +1,1 @@
-export type BattleUnitName = 'people' | 'starships';
+export type BattleUnitName = 'People' | 'Starships';

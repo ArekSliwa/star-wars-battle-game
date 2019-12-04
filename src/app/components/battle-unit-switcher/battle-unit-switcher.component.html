@@ -1,10 +1,10 @@
 <!-- TODO: layout -->
 <mat-button-toggle-group [value]="initialValue"
                          (change)="onButtonToggleGroupChange($event)" name="battleUnit" aria-label="battle unit switcher">
-  <mat-button-toggle value="people">
+  <mat-button-toggle value="People">
     <sw-svg-icon iconId="darth-vader"></sw-svg-icon>
   </mat-button-toggle>
-  <mat-button-toggle value="starships">
-    <sw-svg-icon iconId="millennium-falcon" (click)="battleUnitClick.emit('starships')"></sw-svg-icon>
+  <mat-button-toggle value="Starships">
+    <sw-svg-icon iconId="millennium-falcon"></sw-svg-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>
