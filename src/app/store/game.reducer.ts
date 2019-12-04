@@ -132,10 +132,13 @@ const reducer = createReducer(
   })),
   on(GameActions.getAllStarshipsFinish, (state) => ({
     ...state,
-    starships: {
-      ...state.starships,
-      loadedAll: true
-    }
+    starships: starshipsAdapter.removeMany(
+      ({crew}) => crew === 'unknown',
+      {
+        ...state.starships,
+        loadedAll: true
+      }
+    )
   }))
 );
 

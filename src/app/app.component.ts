@@ -6,7 +6,7 @@ import * as fromGame from 'store/index';
 import {Observable, Subject, zip} from 'rxjs';
 import {Score} from 'models/score.model';
 import {PeopleApiService, StarshipsApiService} from 'api/index';
-import {exhaustMap, filter, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {exhaustMap, filter, map, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {BattleUnitName} from 'models/battle-unit.model';
 import {getRandomInt} from 'shared/util';
 import {UNIT_BATTLE_PROP_NAME} from 'models/index';
@@ -43,8 +43,6 @@ export class AppComponent implements OnInit {
     }),
     map((ids: string[]) => {
       const player1UnitId = ids[getRandomInt(0, ids.length)];
-      console.log(ids);
-      console.log(player1UnitId)
       return {
         player1: player1UnitId,
         player2: null,
@@ -55,7 +53,7 @@ export class AppComponent implements OnInit {
       player1,
       player2: ids[getRandomInt(0, ids.length)]
     })),
-    tap((playersUnitIds) => console.log(playersUnitIds))
+   // tap((playersUnitIds) => console.log(playersUnitIds))
   );
 
   // TODO add typings
@@ -70,8 +68,32 @@ export class AppComponent implements OnInit {
         }))
       );
     }),
-    tap((units) => console.log(units))
+    //tap((units) => console.log(units))
+    shareReplay(1)
   );
+
+  compareUnits$ = this.unitsToFight$.pipe(
+    withLatestFrom(this.score$),
+    map(([{player1, player2, battleUnitProp}, currentScore]) => {
+      const player1Value = Number(player1[battleUnitProp].replace(',', '.'));
+      const player2Value = Number(player2[battleUnitProp].replace(',', '.'));
+
+      console.log({
+        player1: player1Value,
+        player2: player2Value
+      });
+      if (player1Value === player2Value) {
+        return;
+      }
+      this.store.dispatch(fromGame.updateScore({
+        score: {
+          ...currentScore,
+          player1: player1Value > player2Value ? currentScore.player1 + 1 : currentScore.player1,
+          player2: player1Value < player2Value ? currentScore.player2 + 1 : currentScore.player2,
+        }
+      }));
+    }),
+  ).subscribe();
 
 
   constructor(
