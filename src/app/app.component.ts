@@ -1,15 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {Store} from '@ngrx/store';
 import * as fromGame from 'store/index';
-import {Observable, Subject, zip} from 'rxjs';
+import {Observable, zip} from 'rxjs';
 import {Score} from 'models/score.model';
-import {PeopleApiService, StarshipsApiService} from 'api/index';
-import {exhaustMap, filter, map, shareReplay, switchMap, tap, withLatestFrom} from 'rxjs/operators';
-import {BattleUnitName} from 'models/battle-unit.model';
-import {getRandomInt} from 'shared/util';
-import {UNIT_BATTLE_PROP_NAME} from 'models/index';
+import {map, tap} from 'rxjs/operators';
+import {ArrangeBattleService} from './services/arrange-battle.service';
+import {FightPayloadModel} from 'models/fight-payload.model';
 
 @Component({
   selector: 'sw-root',
@@ -21,7 +19,7 @@ export class AppComponent implements OnInit {
 
   score$: Observable<Score> = this.store.select(fromGame.selectScore);
 
-  unitsloaded$: Observable<boolean> = zip(
+  allUnitsResourcesLoaded$: Observable<boolean> = zip(
     this.store.select(fromGame.selectAllPeopleLoaded),
     this.store.select(fromGame.selectAllStarshipsLoaded),
   ).pipe(
@@ -29,78 +27,12 @@ export class AppComponent implements OnInit {
     tap((isLoaded) => !isLoaded || this.openBattleUnitSwitcherDialog())
   );
 
-  selectedBattleUnit$: Observable<BattleUnitName | ''> = this.store.select(fromGame.selectBattleUnitName);
-
-  // TODO add typings
-  fightClick$: Subject<any> = new Subject<any>();
-
-  // TODO add typings
-  unitsIdsToFight$ = this.fightClick$.pipe(
-    withLatestFrom(this.selectedBattleUnit$),
-    // TODO do something with this 'nothing' below
-    switchMap(([nothing, selectedBattleUnit]) => {
-      return this.store.select(fromGame[`select${selectedBattleUnit}Ids`]);
-    }),
-    map((ids: string[]) => {
-      const player1UnitId = ids[getRandomInt(0, ids.length)];
-      return {
-        player1: player1UnitId,
-        player2: null,
-        ids: ids.filter((id) => id !== player1UnitId)
-      };
-    }),
-    map(({player1, player2, ids}) => ({
-      player1,
-      player2: ids[getRandomInt(0, ids.length)]
-    })),
-   // tap((playersUnitIds) => console.log(playersUnitIds))
-  );
-
-  // TODO add typings
-  unitsToFight$ = this.unitsIdsToFight$.pipe(
-    withLatestFrom(this.selectedBattleUnit$),
-    switchMap(([playersUnitIds, selectedBattleUnitName]) => {
-      return this.store.select(fromGame[`select${selectedBattleUnitName}Entities`]).pipe(
-        map((entities) => ({
-          player1: entities[playersUnitIds.player1],
-          player2: entities[playersUnitIds.player2],
-          battleUnitProp: UNIT_BATTLE_PROP_NAME[selectedBattleUnitName]
-        }))
-      );
-    }),
-    //tap((units) => console.log(units))
-    shareReplay(1)
-  );
-
-  compareUnits$ = this.unitsToFight$.pipe(
-    withLatestFrom(this.score$),
-    map(([{player1, player2, battleUnitProp}, currentScore]) => {
-      const player1Value = Number(player1[battleUnitProp].replace(',', '.'));
-      const player2Value = Number(player2[battleUnitProp].replace(',', '.'));
-
-      console.log({
-        player1: player1Value,
-        player2: player2Value
-      });
-      if (player1Value === player2Value) {
-        return;
-      }
-      this.store.dispatch(fromGame.updateScore({
-        score: {
-          ...currentScore,
-          player1: player1Value > player2Value ? currentScore.player1 + 1 : currentScore.player1,
-          player2: player1Value < player2Value ? currentScore.player2 + 1 : currentScore.player2,
-        }
-      }));
-    }),
-  ).subscribe();
-
+  unitsToFight$: Observable<FightPayloadModel> = this.arrangeBattleService.getUnitsToFight();
 
   constructor(
     public dialog: MatDialog,
     private store: Store<{}>,
-    private peopleApi: PeopleApiService,
-    private starshipsApi: StarshipsApiService
+    private arrangeBattleService: ArrangeBattleService
   ) {
   }
 
@@ -117,6 +49,6 @@ export class AppComponent implements OnInit {
   }
 
   onFightClick() {
-    this.fightClick$.next();
+    this.arrangeBattleService.startFight();
   }
 }

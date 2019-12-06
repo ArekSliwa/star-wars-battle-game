@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {PeopleApiService, StarshipsApiService} from 'api/index';
 
 import * as GameActions from './game.actions';
-import {catchError, concatMap, pluck, switchMap} from 'rxjs/operators';
+import {catchError, concatMap, map, pluck, switchMap} from 'rxjs/operators';
 import {GetPeopleResponse, GetStarshipsResponse} from 'api/models/index';
 import {of} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -49,6 +49,17 @@ export class GameEffects {
             of(GameActions.getStarshipsFailure({error: message})))
         )
       )
+    ));
+
+  resetScore$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.changeBattleUnit),
+      map(() => GameActions.updateScore({
+        score: {
+          player1: 0,
+          player2: 0
+        }
+      }))
     ));
 
   constructor(

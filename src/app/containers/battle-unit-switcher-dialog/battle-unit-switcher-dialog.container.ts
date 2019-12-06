@@ -3,8 +3,9 @@ import {Store} from '@ngrx/store';
 import {BattleUnitName, Score} from 'models/index';
 import * as fromGame from 'store/index';
 import {MatDialogRef} from '@angular/material';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {filter, map, startWith, takeUntil, tap, withLatestFrom} from 'rxjs/operators';
+import {ArrangeBattleService} from '../../services/arrange-battle.service';
 
 @Component({
   selector: 'sw-battle-unit-switcher-dialog-container',
@@ -19,8 +20,6 @@ export class BattleUnitSwitcherDialogContainerComponent implements OnDestroy {
   // TODO: check why '' is needed below
   battleUnitName$: Observable<BattleUnitName | ''> = this.store.select(fromGame.selectBattleUnitName);
 
-  score$: Observable<Score> = this.store.select(fromGame.selectScore);
-
   battleUnitClick$: Subject<BattleUnitName> = new Subject<BattleUnitName>();
 
   playClick$: Subject<Score> = new Subject<Score>();
@@ -28,41 +27,33 @@ export class BattleUnitSwitcherDialogContainerComponent implements OnDestroy {
   battleUnitChange$: Observable<boolean> = this.battleUnitClick$.pipe(
     takeUntil(this.destroyed$),
     withLatestFrom(this.battleUnitName$),
-    map(([battleUnitName, previousBattleUnitName]: [BattleUnitName, BattleUnitName]) => {
-      return battleUnitName !== previousBattleUnitName;
-    }),
+    map(([newBattleUnitName, previousBattleUnitName]: [BattleUnitName, BattleUnitName]) =>
+      newBattleUnitName !== previousBattleUnitName),
     startWith(false)
   );
 
-  startNewGame$ = this.playClick$.pipe(
+  startNewGame$: Subscription = this.playClick$.pipe(
     takeUntil(this.destroyed$),
-    withLatestFrom(this.score$, this.battleUnitClick$),
-    tap(([resetedScore, currentScore, battleUnitName]) => {
-      // set name of battle unit before new game:
+    withLatestFrom(this.battleUnitClick$),
+    // set name of battle unit before new game:
+    tap(([_, battleUnitName]) => {
       this.store.dispatch(fromGame.changeBattleUnit({battleUnitName}));
     }),
-    filter(([resetedScore, currentScore]) =>
-      Object.entries(resetedScore).toString() !== Object.entries(currentScore).toString()),
-    // and if current score not 0 : 0 then reset score before new game:
-    map(([resetedScore, currentScore]) => {
-      this.store.dispatch(fromGame.updateScore({ score: resetedScore }));
-    })
+    // start first fight TODO refactor
+    tap(() => this.arrangeBattleService.startFight())
   ).subscribe();
 
   constructor(public dialogRef: MatDialogRef<BattleUnitSwitcherDialogContainerComponent>,
-              private store: Store<{}>) {
+              private store: Store<{}>,
+              private arrangeBattleService: ArrangeBattleService) {
   }
 
-  onBattleUnitClick(battleUnitName: BattleUnitName) {
+  onBattleUnitClick(battleUnitName: BattleUnitName): void {
     this.battleUnitClick$.next(battleUnitName);
   }
 
-  onPlayClick() {
-    const resetedScore: Score = {
-      player1: 0,
-      player2: 0
-    };
-    this.playClick$.next(resetedScore);
+  onPlayClick(): void {
+    this.playClick$.next();
   }
 
   ngOnDestroy(): void {

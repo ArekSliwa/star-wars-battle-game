@@ -1,18 +1,17 @@
 import {Person} from 'api/models';
+import {BattleUnitModel} from 'models/battle-unit.model';
 
-export interface PersonUI {
-  name: string;
+export interface PersonUI extends BattleUnitModel {
   mass: string;
-  url: string;
 }
 
 export class PersonAdapter {
   static adapt(personBackend: Person): PersonUI {
-    return <PersonUI>{
+    return {
       name: personBackend.name,
       mass: personBackend.mass,
       url: personBackend.url
-    };
+    } as PersonUI;
   }
 }
 

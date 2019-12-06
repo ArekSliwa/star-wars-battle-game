@@ -10,7 +10,8 @@ import {MatButtonToggleChange} from '@angular/material';
 export class BattleUnitSwitcherComponent {
 
   @Input()
-  initialValue: BattleUnitName | null;
+  // TODO manage with ''
+  initialValue: BattleUnitName | '';
 
   @Output()
   battleUnitClick: EventEmitter<BattleUnitName> = new EventEmitter();
