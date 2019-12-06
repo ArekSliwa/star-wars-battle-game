@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {BattleUnitSwitcherDialogContainerComponent} from '..';
 import * as fromGame from 'store/index';
 import {Store} from '@ngrx/store';
