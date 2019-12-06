@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {BattleUnitName} from 'models/index';
 import {MatButtonToggleChange} from '@angular/material';
 
 @Component({
   selector: 'sw-battle-unit-switcher',
   templateUrl: './battle-unit-switcher.component.html',
-  styleUrls: ['./battle-unit-switcher.component.scss']
+  styleUrls: ['./battle-unit-switcher.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BattleUnitSwitcherComponent {
 

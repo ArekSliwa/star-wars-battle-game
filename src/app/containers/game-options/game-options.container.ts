@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {BattleUnitSwitcherDialogContainerComponent} from '..';
 import * as fromGame from 'store/index';
 import {Store} from '@ngrx/store';
@@ -7,7 +7,8 @@ import {MatDialog} from '@angular/material';
 @Component({
   selector: 'sw-game-options-container',
   templateUrl: './game-options.container.html',
-  styleUrls: ['./game-options.container.scss']
+  styleUrls: ['./game-options.container.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameOptionsContainerComponent {
   constructor(
