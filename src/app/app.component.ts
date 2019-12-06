@@ -4,10 +4,7 @@ import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {Store} from '@ngrx/store';
 import * as fromGame from 'store/index';
 import {Observable, zip} from 'rxjs';
-import {Score} from 'models/score.model';
 import {map, tap} from 'rxjs/operators';
-import {ArrangeBattleService} from './services/arrange-battle.service';
-import {FightPayloadModel} from 'models/fight-payload.model';
 
 @Component({
   selector: 'sw-root',
@@ -17,8 +14,6 @@ import {FightPayloadModel} from 'models/fight-payload.model';
 })
 export class AppComponent implements OnInit {
 
-  score$: Observable<Score> = this.store.select(fromGame.selectScore);
-
   allUnitsResourcesLoaded$: Observable<boolean> = zip(
     this.store.select(fromGame.selectAllPeopleLoaded),
     this.store.select(fromGame.selectAllStarshipsLoaded),
@@ -27,12 +22,9 @@ export class AppComponent implements OnInit {
     tap((isLoaded) => !isLoaded || this.openBattleUnitSwitcherDialog())
   );
 
-  unitsToFight$: Observable<FightPayloadModel> = this.arrangeBattleService.getUnitsToFight();
-
   constructor(
-    public dialog: MatDialog,
     private store: Store<{}>,
-    private arrangeBattleService: ArrangeBattleService
+    public dialog: MatDialog,
   ) {
   }
 
@@ -46,9 +38,5 @@ export class AppComponent implements OnInit {
       height: '400px',
       width: '600px',
     });
-  }
-
-  onFightClick() {
-    this.arrangeBattleService.startFight();
   }
 }

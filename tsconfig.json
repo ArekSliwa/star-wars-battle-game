@@ -6,7 +6,8 @@
       "api/*": ["app/api/*"],
       "shared/*": ["app/shared/*"],
       "store/*": ["app/store/*"],
-      "models/*": ["app/models/*"]
+      "models/*": ["app/models/*"],
+      "services/*": ["app/services/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

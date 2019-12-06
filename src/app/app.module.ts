@@ -11,7 +11,7 @@ import {storeFreeze} from 'ngrx-store-freeze';
 import {MatButtonModule, MatButtonToggleModule, MatCardModule, MatDialogModule} from '@angular/material';
 import * as fromGame from 'store/index';
 import {BattleUnitSwitcherComponent} from './components';
-import {BattleUnitSwitcherDialogContainerComponent} from './containers';
+import {BattleUnitSwitcherDialogContainerComponent, GameBoardContainerComponent} from './containers';
 import {SwDirectivesModule} from 'shared/directives/directives.module';
 import { ScoreComponent } from './components/score/score.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -43,8 +43,9 @@ const swModules = [
   declarations: [
     AppComponent,
     BattleUnitSwitcherComponent,
+    ScoreComponent,
     BattleUnitSwitcherDialogContainerComponent,
-    ScoreComponent
+    GameBoardContainerComponent
   ],
   imports: [
     BrowserModule,
