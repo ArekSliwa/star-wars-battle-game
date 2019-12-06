@@ -1,26 +1,7 @@
-<sw-score [score]="score$ | async"></sw-score>
-<button mat-raised-button type="button" (click)="onFightClick()">fight!</button>
-
-<ng-container *ngIf="unitsToFight$ | async as units">
-  <div style="display: flex; justify-content: center; align-items: center;">
-    <mat-card style=" width: 300px;">
-      <mat-card-header>
-        <h3>player one</h3>
-      </mat-card-header>
-      <mat-card-content>
-        <div>{{units.player1Unit?.name}}</div>
-        <div> {{units?.battleUnitProp}}: {{units?.player1Unit[units?.battleUnitProp]}}</div>
-      </mat-card-content>
-    </mat-card>
-    <h2>v</h2>
-    <mat-card style=" width: 300px;">
-      <mat-card-header>
-        <h3>player two</h3>
-      </mat-card-header>
-      <mat-card-content>
-        <div>{{units.player2Unit?.name}}</div>
-        <div>{{units?.battleUnitProp}}: {{units?.player2Unit[units?.battleUnitProp]}}</div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<ng-container *ngIf="unitsToFight$ | async as fightingUnits">
+  <sw-game-board-layout>
+    <sw-score [score]="score$ | async"></sw-score>
+    <sw-game-fight-arena [fightingUnits]="fightingUnits"></sw-game-fight-arena>
+    <button mat-raised-button type="button" (click)="onFightClick()">fight!</button>
+  </sw-game-board-layout>
 </ng-container>

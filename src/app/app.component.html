@@ -1,11 +1,9 @@
 <ng-container *ngIf="allUnitsResourcesLoaded$ | async; else preloader">
-  <button mat-stroked-button
-          type="button"
-          (click)="openBattleUnitSwitcherDialog()">
-    change battle unit
-  </button>
+  <sw-game-header>
+    <sw-game-options-container></sw-game-options-container>
+  </sw-game-header>
   <sw-game-board-container></sw-game-board-container>
 </ng-container>
 <ng-template #preloader>
-  <h3>mobilizing army...</h3>
+  <sw-preloader></sw-preloader>
 </ng-template>

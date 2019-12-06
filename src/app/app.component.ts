@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(fromGame.getStarships({nextPageUrl: ''}));
   }
 
+  // TODO remove
   openBattleUnitSwitcherDialog() {
     this.dialog.open(BattleUnitSwitcherDialogContainerComponent, {
       height: '400px',

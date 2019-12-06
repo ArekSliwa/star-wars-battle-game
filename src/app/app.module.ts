@@ -8,7 +8,15 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
 import {storeFreeze} from 'ngrx-store-freeze';
-import {MatButtonModule, MatButtonToggleModule, MatCardModule, MatDialogModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatDialogModule,
+  MatIconModule,
+  MatMenuModule,
+  MatToolbarModule
+} from '@angular/material';
 import * as fromGame from 'store/index';
 import {BattleUnitSwitcherComponent} from './components';
 import {BattleUnitSwitcherDialogContainerComponent, GameBoardContainerComponent} from './containers';
@@ -16,6 +24,11 @@ import {SwDirectivesModule} from 'shared/directives/directives.module';
 import { ScoreComponent } from './components/score/score.component';
 import {HttpClientModule} from '@angular/common/http';
 import {GameEffects} from 'store/game.effects';
+import { GameBoardLayoutComponent } from './components/game-board-layout/game-board-layout.component';
+import { GameFightArenaComponent } from './components/game-fight-arena/game-fight-arena.component';
+import { PreloaderComponent } from './components/preloader/preloader.component';
+import { GameOptionsContainerComponent } from './containers/game-options/game-options.container';
+import { GameHeaderComponent } from './components/game-header/game-header.component';
 
 export interface State {
   game: fromGame.GameState;
@@ -31,7 +44,10 @@ const matModules = [
   MatButtonModule,
   MatDialogModule,
   MatButtonToggleModule,
-  MatCardModule
+  MatCardModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatIconModule
 ];
 
 const swModules = [
@@ -41,11 +57,19 @@ const swModules = [
 
 @NgModule({
   declarations: [
+    // containers
     AppComponent,
+    GameOptionsContainerComponent,
+    GameBoardContainerComponent,
+    BattleUnitSwitcherDialogContainerComponent,
+
+    // presentational
     BattleUnitSwitcherComponent,
     ScoreComponent,
-    BattleUnitSwitcherDialogContainerComponent,
-    GameBoardContainerComponent
+    GameBoardLayoutComponent,
+    GameFightArenaComponent,
+    PreloaderComponent,
+    GameHeaderComponent,
   ],
   imports: [
     BrowserModule,
