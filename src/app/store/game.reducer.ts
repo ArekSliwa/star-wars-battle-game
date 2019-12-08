@@ -48,6 +48,7 @@ export interface GameState {
   score: Score;
   people: PeopleState;
   starships: StarshipsState;
+  totalLoadedInPercentage: number;
 }
 
 const initialState: GameState = {
@@ -57,7 +58,8 @@ const initialState: GameState = {
     player2: 0
   },
   people: peopleInitialState,
-  starships: starshipsInitialState
+  starships: starshipsInitialState,
+  totalLoadedInPercentage: 0
 };
 
 const reducer = createReducer(
@@ -139,6 +141,10 @@ const reducer = createReducer(
         loadedAll: true
       }
     )
+  })),
+  on(GameActions.countTotalLoaded, (state, {totalLoadedInPercentage}) => ({
+    ...state,
+    totalLoadedInPercentage
   }))
 );
 

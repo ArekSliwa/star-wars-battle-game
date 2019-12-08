@@ -26,7 +26,7 @@ export const getPeopleFailure = createAction(
 
 export const getPeopleSuccess = createAction(
   `[${actionTypeGroupKey}] API - Get People Success`,
-  props<{ people: PersonUI[] }>()
+  props<{ people: PersonUI[], page: number, total: number }>()
 );
 
 export const getAllPeopleFinish = createAction(
@@ -34,22 +34,27 @@ export const getAllPeopleFinish = createAction(
 );
 
 export const getStarships = createAction(
-  `[${actionTypeGroupKey}] API - Get Starships Total`,
+  `[${actionTypeGroupKey}] API - Get Starships`,
   props<{nextPageUrl?: string}>()
 );
 
 export const getStarshipsFailure = createAction(
-  `[${actionTypeGroupKey}] API - Get Starships Total Failure`,
+  `[${actionTypeGroupKey}] API - Get Starships Failure`,
   props<{ error: string }>()
 );
 
 export const getStarshipsSuccess = createAction(
-  `[${actionTypeGroupKey}] API - Get Starships Total Success`,
-  props<{ starships: StarshipUI[] }>()
+  `[${actionTypeGroupKey}] API - Get Starships Success`,
+  props<{ starships: StarshipUI[], page: number, total: number }>()
 );
 
 export const getAllStarshipsFinish = createAction(
   `[${actionTypeGroupKey}] API - Get All Starships Finish`
+);
+
+export const countTotalLoaded = createAction(
+  `[${actionTypeGroupKey}] API - Count Total Loaded Resources`,
+  props<{totalLoadedInPercentage: number}>()
 );
 
 const all = union({
@@ -62,7 +67,8 @@ const all = union({
   getStarships,
   getStarshipsFailure,
   getStarshipsSuccess,
-  getAllStarshipsFinish
+  getAllStarshipsFinish,
+  countTotalLoaded
 });
 
 export type GameActionsUnion = typeof all;

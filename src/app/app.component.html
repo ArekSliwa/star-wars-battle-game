@@ -1,9 +1,10 @@
-<ng-container *ngIf="allUnitsResourcesLoaded$ | async; else preloader">
+<ng-container *ngIf="allResourcesLoaded$ | async; else preloader">
   <sw-game-header>
     <sw-game-options-container></sw-game-options-container>
   </sw-game-header>
   <sw-game-board-container></sw-game-board-container>
 </ng-container>
 <ng-template #preloader>
-  <sw-preloader></sw-preloader>
+  <sw-preloader [loadedInPercentage]="totalLoadedInPercentage$ | async"></sw-preloader>
 </ng-template>
+

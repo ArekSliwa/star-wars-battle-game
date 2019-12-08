@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'sw-preloader',
@@ -8,9 +8,16 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 })
 export class PreloaderComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  loadedInPercentage: number = 0;
+
+  lightSaberOpened = false;
 
   ngOnInit() {
+  }
+
+  onLightSaberClick() {
+    this.lightSaberOpened = !this.lightSaberOpened;
   }
 
 }

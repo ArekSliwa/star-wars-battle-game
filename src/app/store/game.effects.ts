@@ -3,12 +3,13 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {PeopleApiService, StarshipsApiService} from 'api/index';
 
 import * as GameActions from './game.actions';
-import {catchError, concatMap, map, pluck, switchMap} from 'rxjs/operators';
+import {catchError, concatMap, filter, map, pluck, switchMap} from 'rxjs/operators';
 import {GetPeopleResponse, GetStarshipsResponse} from 'api/models/index';
-import {of} from 'rxjs';
+import {combineLatest, of} from 'rxjs';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PersonAdapter} from 'models/person-ui.model';
 import {StarshipAdapter} from 'models/starship-ui.model';
+import {getPeople} from './game.actions';
 
 @Injectable()
 export class GameEffects {
@@ -19,12 +20,14 @@ export class GameEffects {
       concatMap(({nextPageUrl}) =>
         this.peopleApiService.getPeople(nextPageUrl).pipe(
           pluck('body'),
-          switchMap((response: GetPeopleResponse) => [
+          switchMap(({results, next, count}: GetPeopleResponse) => [
             GameActions.getPeopleSuccess({
-              people: response.results.map((person) => PersonAdapter.adapt(person))
+              people: results.map((person) => PersonAdapter.adapt(person)),
+              page: getPageNumber(nextPageUrl),
+              total: count
             }),
-            response.next ?
-              GameActions.getPeople({nextPageUrl: getLastSegment(response.next)})
+            next ?
+              GameActions.getPeople({nextPageUrl: getLastSegment(next)})
               : GameActions.getAllPeopleFinish()
           ]),
           catchError(({message}: HttpErrorResponse) =>
@@ -39,10 +42,14 @@ export class GameEffects {
       switchMap(({nextPageUrl}) =>
         this.starshipsApiService.getStarships(nextPageUrl).pipe(
           pluck('body'),
-          switchMap((response: GetStarshipsResponse) => [
-            GameActions.getStarshipsSuccess({starships: response.results.map((starship) => StarshipAdapter.adapt(starship))}),
-            response.next ?
-              GameActions.getStarships({nextPageUrl: getLastSegment(response.next)})
+          switchMap(({results, next, count}: GetStarshipsResponse) => [
+            GameActions.getStarshipsSuccess({
+              starships: results.map((starship) => StarshipAdapter.adapt(starship)),
+              page: getPageNumber(nextPageUrl),
+              total: count
+            }),
+            next ?
+              GameActions.getStarships({nextPageUrl: getLastSegment(next)})
               : GameActions.getAllStarshipsFinish()
           ]),
           catchError(({message}: HttpErrorResponse) =>
@@ -50,6 +57,21 @@ export class GameEffects {
         )
       )
     ));
+
+  countTotalLoadedInPercentage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(GameActions.getPeopleSuccess),
+      (getPeopleSuccess) =>  combineLatest( getPeopleSuccess, this.actions$.pipe(ofType(GameActions.getStarshipsSuccess))),
+      map(([getPeopleSuccess, getStarshipsSuccess]) => {
+        const onePage = 10;
+        const resourcesTotalPages = Math.ceil((getPeopleSuccess.total + getStarshipsSuccess.total) / onePage);
+        const resourcesTotalLoadedPages = getPeopleSuccess.page + getStarshipsSuccess.page;
+        const totalLoadedInPercentage = Number(((resourcesTotalLoadedPages * 100) / resourcesTotalPages).toFixed());
+
+        return GameActions.countTotalLoaded({ totalLoadedInPercentage });
+      })
+    )
+  );
 
   resetScore$ = createEffect(() =>
     this.actions$.pipe(
@@ -70,6 +92,10 @@ export class GameEffects {
   }
 }
 
-export function getLastSegment(url) {
+export function getLastSegment(url: string): string {
   return url.substring(url.lastIndexOf('/'));
+}
+
+export function getPageNumber(pageUrl: string): number {
+  return Number(pageUrl.substring(pageUrl.lastIndexOf('=') + 1));
 }

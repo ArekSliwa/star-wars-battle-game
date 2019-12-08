@@ -4,7 +4,7 @@ import {BattleUnitSwitcherDialogContainerComponent} from './containers';
 import {Store} from '@ngrx/store';
 import * as fromGame from 'store/index';
 import {Observable, zip} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, tap, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'sw-root',
@@ -14,12 +14,11 @@ import {map, tap} from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
 
-  allUnitsResourcesLoaded$: Observable<boolean> = zip(
-    this.store.select(fromGame.selectAllPeopleLoaded),
-    this.store.select(fromGame.selectAllStarshipsLoaded),
-  ).pipe(
-    map(([peopleLoaded, starshipsLoaded]: [boolean, boolean]) => peopleLoaded && starshipsLoaded),
-    tap((isLoaded) => !isLoaded || this.openBattleUnitSwitcherDialog())
+  totalLoadedInPercentage$: Observable<number> = this.store.select(fromGame.selectTotalLoadedInPercentage);
+
+  allResourcesLoaded$: Observable<number> = this.totalLoadedInPercentage$.pipe(
+    filter((totalLoadedInPercentage) => totalLoadedInPercentage === 100),
+    tap(() => this.openBattleUnitSwitcherDialog())
   );
 
   constructor(
@@ -29,8 +28,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(fromGame.getPeople({nextPageUrl: ''}));
-    this.store.dispatch(fromGame.getStarships({nextPageUrl: ''}));
+    this.store.dispatch(fromGame.getPeople({nextPageUrl: '?page=1'}));
+    this.store.dispatch(fromGame.getStarships({nextPageUrl: '?page=1'}));
+
+    // get totals and divide by page count (10)
   }
 
   // TODO remove

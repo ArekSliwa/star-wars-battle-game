@@ -48,3 +48,8 @@ export const selectAllStarshipsLoaded = createSelector(
   selectStarshipsState,
   (state: StarshipsState) => !!state && state.loadedAll
 );
+
+export const selectTotalLoadedInPercentage = createSelector(
+  selectGameSlice,
+  (state: GameState) => !!state && state.totalLoadedInPercentage
+)
