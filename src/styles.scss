@@ -2,6 +2,8 @@
 
 @import '~normalize-scss';
 
+@import 'assets/scss/index';
+
 @font-face {
   font-family: 'Anakin';
   src:  url('./assets/fonts/opipik_anakinmono/anakinmono.ttf') format('truetype');
@@ -15,6 +17,10 @@
   url("./assets/fonts/star-jedi/Strjmono.svg#StarJediLogoMonoLine") format("svg");
   font-weight:normal;
   font-style:normal;
+}
+
+* {
+  color: var(--sw-accent);
 }
 
 html, body {

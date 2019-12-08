@@ -1,42 +1,44 @@
+<!-- TODO refactoring -->
+
 <div class="light-sabers-box">
-<div class="light_saber light-side"
-     [class.open]="lightSaberOpened"
-     (click)="onLightSaberClick()">
-  <div class="back">
-    <div class="outer_glow" style="background-color: #1dff56;"
-    [ngStyle]="{
+  <div class="light_saber light-side"
+       [class.open]="lightSaberOpened"
+       (click)="onLightSaberClick()">
+    <div class="back">
+      <div class="outer_glow" style="background-color: #1dff56;"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 370 + 'px'
     }"></div>
-    <div class="middle_glow" style="background-color: #ccfadc;"
-         [ngStyle]="{
+      <div class="middle_glow" style="background-color: #ccfadc;"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 350 + 'px'
     }"></div>
-    <div class="core_glow"
-         [ngStyle]="{
+      <div class="core_glow"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 347 + 'px'
     }"></div>
-    <div class="handle"><img src="https://zcode.io/sites/default/files/lightSaber.svg"></div>
+      <div class="handle"><img src="https://zcode.io/sites/default/files/lightSaber.svg"></div>
+    </div>
   </div>
-</div>
-<div class="light_saber dark-side"
-     [class.open]="lightSaberOpened"
-     (click)="onLightSaberClick()">
-  <div class="back">
-    <div class="outer_glow" style="background-color: #ff1d1d;"
-         [ngStyle]="{
+  <div class="light_saber dark-side"
+       [class.open]="lightSaberOpened"
+       (click)="onLightSaberClick()">
+    <div class="back">
+      <div class="outer_glow" style="background-color: #ff1d1d;"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 370 + 'px'
     }"></div>
-    <div class="middle_glow" style="background-color: #faccd2;"
-         [ngStyle]="{
+      <div class="middle_glow" style="background-color: #faccd2;"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 350 + 'px'
     }"></div>
-    <div class="core_glow"
-         [ngStyle]="{
+      <div class="core_glow"
+           [ngStyle]="{
     height: (loadedInPercentage/100) * 347 + 'px'
     }"></div>
-    <div class="handle"><img src="https://zcode.io/sites/default/files/lightSaber.svg"></div>
+      <div class="handle"><img src="https://zcode.io/sites/default/files/lightSaber.svg"></div>
+    </div>
   </div>
-</div>
 </div>
 <h3>mobilizing army ...</h3>
 <span style="color: white; color: #ffe300; padding: 16px;">{{loadedInPercentage}}/100%</span>

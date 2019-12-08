@@ -1,0 +1,15 @@
+:host {
+
+  mat-toolbar {
+    justify-content: center;
+    background-color: var(--sw-primary);
+
+    h2 {
+      font-family: Jedi;
+    }
+
+    ::ng-deep > * {
+      margin-left: auto;
+    }
+  }
+}
