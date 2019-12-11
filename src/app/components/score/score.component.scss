@@ -1,0 +1,19 @@
+:host {
+  display: inline-flex;
+  width: 100px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.score__divider {
+  font-family: Jedi;
+  margin-top: -10px;
+  position: relative;
+  span {
+    position: absolute;
+    left: -6px;
+    top: -2px;
+  }
+}
