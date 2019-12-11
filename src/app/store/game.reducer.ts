@@ -1,4 +1,4 @@
-import {BattleUnitName, Score} from '../models';
+import {BattleUnitName, ROUND_STAGE, Score, WinnerTypes} from 'models/index';
 import {createReducer, on} from '@ngrx/store';
 import * as GameActions from './game.actions';
 import {createEntityAdapter, EntityState} from '@ngrx/entity';
@@ -6,6 +6,8 @@ import {PersonUI} from 'models/index';
 import {StarshipUI} from 'models/starship-ui.model';
 
 
+
+// TODO refactor - people to divided store slice Units
 export const peopleAdapter = createEntityAdapter<PersonUI>({
   selectId: (person) => parseInt(person.url.substring(person.url.indexOf('people') + 7), 10)
 });
@@ -24,6 +26,7 @@ const peopleInitialState = peopleAdapter.getInitialState({
   error: null
 });
 
+// TODO refactor - starships to divided store slice Units
 export const starshipsAdapter = createEntityAdapter<StarshipUI>({
   selectId: (starship) => parseInt(starship.url.substring(starship.url.indexOf('starships') + 10), 10)
 });
@@ -46,6 +49,8 @@ const starshipsInitialState = starshipsAdapter.getInitialState({
 export interface GameState {
   battleUnitName: BattleUnitName;
   score: Score;
+  roundStage: ROUND_STAGE;
+  roundWinner: WinnerTypes;
   people: PeopleState;
   starships: StarshipsState;
   totalLoadedInPercentage: number;
@@ -57,6 +62,8 @@ const initialState: GameState = {
     player1: 0,
     player2: 0
   },
+  roundStage: ROUND_STAGE.STAND_BY,
+  roundWinner: null,
   people: peopleInitialState,
   starships: starshipsInitialState,
   totalLoadedInPercentage: 0
@@ -71,6 +78,18 @@ const reducer = createReducer(
   on(GameActions.updateScore, (state, {score}) => ({
     ...state,
     score
+  })),
+  on(GameActions.updateRoundStage, (state, {roundStage}) => ({
+    ...state,
+    roundStage
+  })),
+  on(GameActions.setRoundWinner, (state, {roundWinner}) => ({
+    ...state,
+    roundWinner
+  })),
+  on(GameActions.resetRoundWinner, (state) => ({
+    ...state,
+    roundWinner: null
   })),
   on(GameActions.getPeople, (state) => ({
     ...state,

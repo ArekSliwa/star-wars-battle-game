@@ -1,7 +1,13 @@
 <ng-container *ngIf="unitsToFight$ | async as fightingUnits">
   <sw-game-board-layout>
     <sw-score [score]="score$ | async"></sw-score>
-    <sw-game-fight-arena [fightingUnits]="fightingUnits"></sw-game-fight-arena>
-    <button mat-raised-button type="button" (click)="onFightClick()">fight!</button>
+    <sw-game-fight-arena [animationState]="currentRequiredAnimationState$ | async"
+                         [winner]="roundWinner$ | async"
+                         [fightingUnits]="fightingUnits" (currentEndedAnimation)="onArenaEndAnimation($event)">
+
+    </sw-game-fight-arena>
+    <button mat-raised-button type="button"
+            [disabled]="(isRoundStandBy$ | async) === false"
+            (click)="onFightClick()">fight!</button>
   </sw-game-board-layout>
 </ng-container>

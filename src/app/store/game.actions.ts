@@ -1,22 +1,36 @@
 import {createAction, props, union} from '@ngrx/store';
-import {BattleUnitName, PersonUI, Score} from 'models/index';
+import {BattleUnitName, PersonUI, ROUND_STAGE, Score, WinnerTypes} from 'models/index';
 import {StarshipUI} from 'models/starship-ui.model';
 
 const actionTypeGroupKey = 'Game';
 
 export const changeBattleUnit = createAction(
   `[${actionTypeGroupKey}] Battle Unit Change`,
-  props<{battleUnitName: BattleUnitName}>()
+  props<{ battleUnitName: BattleUnitName }>()
 );
 
 export const updateScore = createAction(
   `[${actionTypeGroupKey}] Update Score`,
-  props<{score: Score}>()
+  props<{ score: Score }>()
+);
+
+export const updateRoundStage = createAction(
+  `[${actionTypeGroupKey}] Update Round Stage`,
+  props<{ roundStage: ROUND_STAGE }>()
+);
+
+export const setRoundWinner = createAction(
+  `[${actionTypeGroupKey}] Set Round Winner`,
+  props<{ roundWinner: WinnerTypes}>()
+);
+
+export const resetRoundWinner = createAction(
+  `[${actionTypeGroupKey}] Reset Round Winner`,
 );
 
 export const getPeople = createAction(
   `[${actionTypeGroupKey}] API - Get People`,
-  props<{nextPageUrl?: string}>()
+  props<{ nextPageUrl?: string }>()
 );
 
 export const getPeopleFailure = createAction(
@@ -35,7 +49,7 @@ export const getAllPeopleFinish = createAction(
 
 export const getStarships = createAction(
   `[${actionTypeGroupKey}] API - Get Starships`,
-  props<{nextPageUrl?: string}>()
+  props<{ nextPageUrl?: string }>()
 );
 
 export const getStarshipsFailure = createAction(
@@ -54,12 +68,15 @@ export const getAllStarshipsFinish = createAction(
 
 export const countTotalLoaded = createAction(
   `[${actionTypeGroupKey}] API - Count Total Loaded Resources`,
-  props<{totalLoadedInPercentage: number}>()
+  props<{ totalLoadedInPercentage: number }>()
 );
 
 const all = union({
   changeBattleUnit,
   updateScore,
+  updateRoundStage,
+  setRoundWinner,
+  resetRoundWinner,
   getPeople,
   getPeopleFailure,
   getPeopleSuccess,

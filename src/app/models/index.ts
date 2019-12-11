@@ -4,4 +4,5 @@ export * from './person-ui.model';
 export * from './starship-ui.model';
 export * from './unit-battle-prop-name.model';
 export * from './fight-payload.model';
-
+export * from './round-stage.model';
+export * from './winner.model';

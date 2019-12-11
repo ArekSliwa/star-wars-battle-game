@@ -1,20 +1,22 @@
 <div style="display: flex; justify-content: center; align-items: center;">
-  <mat-card style=" width: 300px;">
+  <mat-card class="game-arena__card" [class.winner]="winner === 'player1'">
     <mat-card-header>
       <h3>player one</h3>
     </mat-card-header>
     <mat-card-content>
       <div>{{fightingUnits.player1Unit?.name}}</div>
+      <sw-svg-icon [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
       <div> {{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player1Unit[fightingUnits?.battleUnitProp]}}</div>
     </mat-card-content>
   </mat-card>
-  <h2>v</h2>
-  <mat-card style=" width: 300px;">
+  <h2>vs</h2>
+  <mat-card class="game-arena__card" [class.winner]="winner === 'player2'">
     <mat-card-header>
       <h3>player two</h3>
     </mat-card-header>
     <mat-card-content>
       <div>{{fightingUnits.player2Unit?.name}}</div>
+      <sw-svg-icon [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
       <div>{{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player2Unit[fightingUnits?.battleUnitProp]}}</div>
     </mat-card-content>
   </mat-card>

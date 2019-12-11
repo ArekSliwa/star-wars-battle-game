@@ -15,6 +15,16 @@ export const selectScore = createSelector(
   (state: GameState) => !!state && state.score
 );
 
+export const selectRoundStage = createSelector(
+  selectGameSlice,
+  (state: GameState) => !!state && state.roundStage
+);
+
+export const selectRoundWinner = createSelector(
+  selectGameSlice,
+  (state: GameState) => !!state && state.roundWinner
+);
+
 export const selectPeopleState = createSelector(
   selectGameSlice,
   (state: GameState) => !!state && state.people

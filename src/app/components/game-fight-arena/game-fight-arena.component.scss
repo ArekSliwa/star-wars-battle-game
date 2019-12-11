@@ -1,5 +1,21 @@
-:host {
- mat-card {
-   background-color: var(--sw-primary);
- }
+mat-card.game-arena__card {
+  background-color: var(--sw-primary);
+  width: 300px;
+  height: 400px;
+
+  mat-card-header {
+    justify-content: center;
+
+    ::ng-deep .mat-card-header-text {
+      margin: 0;
+    }
+  }
+
+  mat-card-content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-family: Anakin;
+  }
 }
+
