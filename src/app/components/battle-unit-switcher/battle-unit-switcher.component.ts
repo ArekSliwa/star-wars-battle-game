@@ -17,6 +17,8 @@ export class BattleUnitSwitcherComponent {
   @Output()
   battleUnitClick: EventEmitter<BattleUnitName> = new EventEmitter();
 
+  btnIconSize = '64px';
+
   onButtonToggleGroupChange({value}: MatButtonToggleChange) {
     this.battleUnitClick.emit(value);
   }

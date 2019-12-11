@@ -1,5 +1,7 @@
 :host {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 
   svg {
     stroke: currentColor;

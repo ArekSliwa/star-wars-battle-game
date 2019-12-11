@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {BattleUnitSwitcherDialogContainerComponent} from '..';
+import {battleUnitSwitcherDialogConfig, BattleUnitSwitcherDialogContainerComponent} from '..';
 import * as fromGame from 'store/index';
 import {Store} from '@ngrx/store';
 import {MatDialog} from '@angular/material';
@@ -20,8 +20,7 @@ export class GameOptionsContainerComponent {
 
   openBattleUnitSwitcherDialog() {
     this.dialog.open(BattleUnitSwitcherDialogContainerComponent, {
-      height: '400px',
-      width: '600px',
+      ...battleUnitSwitcherDialogConfig
     });
   }
 

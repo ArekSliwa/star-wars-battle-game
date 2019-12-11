@@ -1,0 +1,27 @@
+:host {
+  height: 100%;
+
+  sw-battle-unit-switcher {
+    margin: 24px 0;
+  }
+
+
+  // TODO remove - these styles shouldnt be in container. This is not responsibility of the container
+  button.dialog__play-btn {
+
+    .dialog__play-btn-content {
+      display: flex;
+      flex-flow: column;
+      padding: 12px 0;
+    }
+    span {
+      font-family: Jedi;
+      line-height: 1;
+      margin-top: 8px;
+    }
+    sw-svg-icon:last-of-type {
+      transform: scale(-1, 1);
+      margin-top: -32px;
+    }
+  }
+}
