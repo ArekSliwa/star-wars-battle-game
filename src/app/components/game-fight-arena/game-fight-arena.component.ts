@@ -14,7 +14,7 @@ import {IconId} from 'shared/icon';
 import {BattleUnitName, UNIT_BATTLE_PROP_NAME, WinnerTypes} from 'models/index';
 import {getEnumKeyByValue} from 'shared/util';
 import {GAME_FIGHT_ARENA_ANIMATION_STATE} from './game-fight-arena-anim-state.model';
-import {animate, query, state, style, transition, trigger} from '@angular/animations';
+import {animate, keyframes, query, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'sw-game-fight-arena',
@@ -22,10 +22,9 @@ import {animate, query, state, style, transition, trigger} from '@angular/animat
   styleUrls: ['./game-fight-arena.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
+    // TODO refactor - animation should be DRY and in dedicated file
+
     trigger('fightArenaStage', [
-      state('void', style({
-        transform: 'scale(.01)'
-      })),
       state(GAME_FIGHT_ARENA_ANIMATION_STATE.DEFAULT, style({
         transform: 'scale(.01)',
         opacity: 1
@@ -39,20 +38,74 @@ import {animate, query, state, style, transition, trigger} from '@angular/animat
       })),
       transition(
         `${GAME_FIGHT_ARENA_ANIMATION_STATE.DEFAULT}=>${GAME_FIGHT_ARENA_ANIMATION_STATE.COME_FROM_SPACE}`,
-        animate('2000ms')),
+        [
+          query('.game-card__unit-value',
+            style({
+             // opacity: 0,
+              width: 0
+            })
+          ),
+          query(':self', [
+            style({
+              transform: 'scale(.01)'
+            }),
+            animate('1000ms', style({
+              transform: 'scale(1)'
+            }))
+          ]),
+        ]),
       transition(`${GAME_FIGHT_ARENA_ANIMATION_STATE.COME_FROM_SPACE}=>${GAME_FIGHT_ARENA_ANIMATION_STATE.HIGHLIGHT_WINNER}`,
         [
+          query('.game-card__unit-value', [
+            // animate('1000ms', style({
+            //   opacity: 1
+            // })),
+            animate('2000ms steps(44)', style({
+              width: '24em'
+            }))
+          ]),
           query('.winner', [
-            style({background: 'green'}),
-            animate('2000ms', style({ background: 'blue' }))
+            style({
+              borderColor: 'transparent'
+            }),
+            animate('2000ms', keyframes([
+
+              // TODO is there a way to add iteration-count?
+              style({borderColor: '#ffe300', offset: .15}),
+              style({borderColor: 'transparent', offset: .3}),
+              style({borderColor: '#ffe300', offset: .45}),
+              style({borderColor: 'transparent', offset: .6}),
+              style({borderColor: '#ffe300', offset: .75}),
+              style({borderColor: 'transparent', offset: .9}),
+            ]))
+            // animate('700ms', style({borderColor: 'transparent'})),
+            // animate('700ms', style({borderColor: '#ffe300'})),
           ])
         ]),
       transition(`${GAME_FIGHT_ARENA_ANIMATION_STATE.HIGHLIGHT_WINNER}=>${GAME_FIGHT_ARENA_ANIMATION_STATE.LEAVE_WITH_SPACE}`,
-        animate('2000ms')),
+        animate('1000ms')),
       transition(`void=>${GAME_FIGHT_ARENA_ANIMATION_STATE.COME_FROM_SPACE}`,
-        animate('2000ms')),
+        [
+          query('.game-card__unit-value',
+            style({
+             // opacity: 0,
+              width: 0
+            }),
+          ),
+          query(':self', [
+            style({
+              transform: 'scale(.01)'
+            }),
+            animate('1000ms', style({
+              transform: 'scale(1)'
+            }))
+          ]),
+        ]),
       transition(`${GAME_FIGHT_ARENA_ANIMATION_STATE.COME_FROM_SPACE}=>${GAME_FIGHT_ARENA_ANIMATION_STATE.DEFAULT}`,
-        animate('0ms'))
+        style({
+          transform: 'scale(.01)',
+          opacity: 1
+        }))
     ]),
   ]
 })

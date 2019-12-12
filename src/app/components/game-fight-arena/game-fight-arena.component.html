@@ -1,23 +1,25 @@
+<!-- TODO refactor - game-arena-card to divided component -->
 <div style="display: flex; justify-content: center; align-items: center;">
   <mat-card class="game-arena__card" [class.winner]="winner === 'player1'">
     <mat-card-header>
       <h3>player one</h3>
     </mat-card-header>
     <mat-card-content>
-      <div>{{fightingUnits.player1Unit?.name}}</div>
-      <sw-svg-icon [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
-      <div> {{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player1Unit[fightingUnits?.battleUnitProp]}}</div>
+      <sw-svg-icon class="game-card__unit-symbol" [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
+      <div class="game-card__unit-name">{{fightingUnits.player1Unit?.name}}</div>
+      <div class="game-card__unit-value"> {{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player1Unit[fightingUnits?.battleUnitProp]}}</div>
     </mat-card-content>
   </mat-card>
-  <h2>vs</h2>
+  <h2 class="game-arena__card-divider">vs</h2>
   <mat-card class="game-arena__card" [class.winner]="winner === 'player2'">
     <mat-card-header>
       <h3>player two</h3>
     </mat-card-header>
     <mat-card-content>
-      <div>{{fightingUnits.player2Unit?.name}}</div>
-      <sw-svg-icon [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
-      <div>{{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player2Unit[fightingUnits?.battleUnitProp]}}</div>
+      <sw-svg-icon class="game-card__unit-symbol" [iconId]="getUnitIcon(fightingUnits)" size="84px"></sw-svg-icon>
+      <div class="game-card__unit-name">{{fightingUnits.player2Unit?.name}}</div>
+      <div class="game-card__unit-value">{{fightingUnits?.battleUnitProp}}: {{fightingUnits?.player2Unit[fightingUnits?.battleUnitProp]}}</div>
     </mat-card-content>
   </mat-card>
+  <div class="game-arena__no-winner" [class.winner]="winner === 'no_winner'"></div>
 </div>

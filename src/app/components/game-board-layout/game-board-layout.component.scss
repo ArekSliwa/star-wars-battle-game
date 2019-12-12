@@ -1,7 +1,23 @@
+$height-of-header: 64px;
+
 :host {
   display: flex;
   flex-flow: column;
   justify-content: space-around;
   align-items: center;
-  //height: 100%;
+  min-height: 630px;
+  height: calc(100% - #{$height-of-header});
+  max-height: 1000px;
+}
+
+sw-score {
+  flex: 0 0 100px;
+}
+
+sw-game-fight-arena {
+  flex: 1 0 auto;
+}
+
+button {
+  margin-top: 24px;
 }

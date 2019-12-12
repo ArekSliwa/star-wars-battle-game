@@ -60,7 +60,6 @@ export class GameBoardContainerComponent {
   }
 
   onArenaEndAnimation(animationStateName: GAME_FIGHT_ARENA_ANIMATION_STATE) {
-    console.log('animation ended:', animationStateName);
     switch (animationStateName) {
       case GAME_FIGHT_ARENA_ANIMATION_STATE.COME_FROM_SPACE:
         this.store.dispatch(fromGame.updateRoundStage({roundStage: ROUND_STAGE.COMPARE}));
