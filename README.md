@@ -7,6 +7,7 @@ link to deployed app: https://areksliwa.github.io/star-wars-battle-game/
 
 # Technologies:
  - angular
+ - material.angular
  - rxjs
  - ngrx store
  - typescript
