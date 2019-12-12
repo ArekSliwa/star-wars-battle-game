@@ -1,8 +1,20 @@
 # Star Wars Battle Game
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
+This is my playground and portfolio project - easy game based on swapi.co. You can choose two units to fight People nad Starships. 
+During the round, the game is choosing randomly two 'cards' for players, comparing properties of the units, showing winner and updating score.
+When the round is complete, you can click 'FIGHT' again or switch unit. You can also reset score. 
 
-## Next steps
+# Technologies:
+ - angular
+ - rxjs
+ - ngrx store
+ - typescript
+
+
+# Running
+ `npm install` an then `ng serve`. Please install redux devtools plugin to your browser to see ngrx store alive.
+
+## Next steps in close future
  - code refactoring and cleaning
  - adding tests
 
