@@ -1,14 +1,7 @@
-<button mat-icon-button [matMenuTriggerFor]="gameMenu">
+<button mat-icon-button class="sw-button" [matMenuTriggerFor]="gameMenu">
   <mat-icon>more_vert</mat-icon>
 </button>
 <mat-menu #gameMenu>
-  <style>
-    .menu__item {
-      font-family: Anakin;
-      text-transform: uppercase;
-      color: var(--sw-accent);
-    }
-  </style>
-  <button mat-menu-item class="menu__item" (click)="openBattleUnitSwitcherDialog()">Change Battle Unit</button>
-  <button mat-menu-item class="menu__item" (click)="resetCurrentGame()">Reset Current Game</button>
+  <button mat-menu-item class="sw-menu-item" (click)="openBattleUnitSwitcherDialog()">Change Battle Unit</button>
+  <button mat-menu-item class="sw-menu-item" (click)="resetCurrentGame()">Reset Current Game</button>
 </mat-menu>

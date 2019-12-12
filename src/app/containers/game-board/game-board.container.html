@@ -6,8 +6,9 @@
                          [fightingUnits]="fightingUnits" (currentEndedAnimation)="onArenaEndAnimation($event)">
 
     </sw-game-fight-arena>
-    <button mat-raised-button type="button"
+    <button mat-button type="button"
+            class="sw-button sw-button--large"
             [disabled]="(isRoundStandBy$ | async) === false"
-            (click)="onFightClick()">fight!</button>
+            (click)="onFightClick()">fight</button>
   </sw-game-board-layout>
 </ng-container>
