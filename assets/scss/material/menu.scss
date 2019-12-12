@@ -1,0 +1,14 @@
+.mat-menu-item {
+
+  &[disabled="true"] {
+    opacity: 0.4;
+  }
+
+  &.sw-menu-item {
+      font-family: Anakin;
+      text-transform: uppercase;
+      color: var(--sw-accent);
+      cursor: url('./assets/icons/light-saber.png'), auto !important; // important to force material styles
+  }
+
+}

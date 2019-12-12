@@ -1,0 +1,22 @@
+.mat-button, .mat-icon-button {
+
+  &[disabled="true"] {
+    opacity: 0.4;
+  }
+
+  &.sw-button {
+    font-family: Jedi;
+    cursor: url('./assets/icons/light-saber.png'), auto !important; // important to force material styles
+    border: 2px solid transparent;
+    transition: border-color .25s;
+    line-height: 1;
+
+    &:hover {
+      border-color: var(--sw-accent);
+    }
+  }
+
+  &.sw-button--large {
+    font-size: 24px;
+  }
+}
