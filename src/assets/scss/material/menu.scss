@@ -1,5 +1,9 @@
 .mat-menu-item {
 
+  &[disabled="true"] {
+    opacity: 0.4;
+  }
+
   &.sw-menu-item {
       font-family: Anakin;
       text-transform: uppercase;

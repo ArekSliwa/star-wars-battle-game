@@ -1,6 +1,6 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {Score} from 'models/score.model';
 import * as fromGame from 'store/index';
 import {BattleUnitName} from 'models/battle-unit.model';
@@ -79,21 +79,8 @@ export class ArrangeBattleService implements OnDestroy {
         return 'no_winner' as WinnerTypes;
       }
     })
-
-    // // if values are the same, there is no need to update score. TODO animation management in this case
-    // filter(({player1Value, player2Value}) => player1Value !== player2Value),
-    // compare and update score
-    // tap(({player1Value, player2Value, currentScore}) => {
-    //   this.store.dispatch(fromGame.updateScore({
-    //     score: {
-    //       ...currentScore,
-    //       player1: player1Value > player2Value ? currentScore.player1 + 1 : currentScore.player1,
-    //       player2: player1Value < player2Value ? currentScore.player2 + 1 : currentScore.player2,
-    //     }
-    //   }));
-    // }),
   );
-  spreadWinnerToUniverse$ = this.roundStage$.pipe(
+  spreadWinnerToUniverse$: Subscription = this.roundStage$.pipe(
     takeUntil(this.destroyed$),
     withLatestFrom(this.compareUnits$),
     filter(([roundStage, _]: [ROUND_STAGE, WinnerTypes]) => roundStage === ROUND_STAGE.COMPARE),
@@ -102,7 +89,7 @@ export class ArrangeBattleService implements OnDestroy {
     })
   ).subscribe();
 
-  updateScore$ = this.roundStage$.pipe(
+  updateScore$: Subscription = this.roundStage$.pipe(
     takeUntil(this.destroyed$),
     withLatestFrom(this.compareUnits$, this.score$),
     filter(([roundStage, winner, currentScore]: [ROUND_STAGE, WinnerTypes, Score]) => roundStage === ROUND_STAGE.SCORE_UPDATE),

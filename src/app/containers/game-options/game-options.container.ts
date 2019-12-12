@@ -3,6 +3,8 @@ import {battleUnitSwitcherDialogConfig, BattleUnitSwitcherDialogContainerCompone
 import * as fromGame from 'store/index';
 import {Store} from '@ngrx/store';
 import {MatDialog} from '@angular/material';
+import {map} from 'rxjs/operators';
+import {ROUND_STAGE} from 'models/round-stage.model';
 
 @Component({
   selector: 'sw-game-options-container',
@@ -11,6 +13,11 @@ import {MatDialog} from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameOptionsContainerComponent {
+
+  isRoundStandBy$ = this.store.select(fromGame.selectRoundStage).pipe(
+    map((roundStage: ROUND_STAGE) => roundStage === ROUND_STAGE.STAND_BY ? true : false)
+  );
+
   constructor(
     private store: Store<{}>,
     public dialog: MatDialog,
