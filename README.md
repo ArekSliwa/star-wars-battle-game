@@ -2,7 +2,8 @@
 
 This is my playground and portfolio project - easy game based on swapi.co. You can choose two units to fight People nad Starships. 
 During the round, the game is choosing randomly two 'cards' for players, comparing properties of the units, showing winner and updating score.
-When the round is complete, you can click 'FIGHT' again or switch unit. You can also reset score. 
+When the round is complete, you can click 'FIGHT' again or switch unit. You can also reset score.
+link to deployed app: https://areksliwa.github.io/star-wars-battle-game/ 
 
 # Technologies:
  - angular
